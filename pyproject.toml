@@ -5,6 +5,7 @@ description = "Skin lesion inference API"
 authors = ["Rob Pickerill <rob@spotplotter.com>"]
 homepage = "https://spotplotter.com"
 repository = "https://github.com/spot-plot/inference-api"
+package-mode = false
 
 [tool.poetry.dependencies]
 python = "^3.11"
@@ -15,15 +16,17 @@ pydantic = "^2.10.4"
 pydantic-settings = "^2.7.0"
 pillow = "^11.0.0"
 python-multipart = "^0.0.20"
+uvicorn = "^0.34.0"
+slowapi = "^0.1.9"
 
 [tool.poetry.dev-dependencies]
 pytest = "^8.3.4"
 black = "^24.10.0"
 isort = "^5.13.2"
 
-[tool.poetry.group.dev.dependencies]
-uvicorn = "^0.34.0"
-
 [build-system]
 requires = ["poetry-core>=1.0.0"]
 build-backend = "poetry.core.masonry.api"
+
+[tool.poetry.scripts]
+runserver = "uvicorn.main:app --host 127.0.0.1 --port 8000 --reload"

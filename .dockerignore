@@ -1,0 +1,10 @@
+# Ignore everything
+**
+
+!Dockerfile
+!requirements.txt
+!pyproject.toml
+!poetry.lock
+!app/
+!app/**
+!resnet50.keras
