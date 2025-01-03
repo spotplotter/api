@@ -2,37 +2,35 @@ name: Docker Image CI
 
 on:
   push:
-    branches: [ "main" ]
+    branches: ["main"]
   pull_request:
-    branches: [ "main" ]
+    branches: ["main"]
 
 env:
   IMAGE_NAME: inference-api
 
 jobs:
-
   build:
-
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v4
+      - uses: actions/checkout@v4
 
-    - name: Get Git Version
-      id: version
-      run: echo "VERSION=$(git describe --tags --always --dirty)" >> $GITHUB_ENV
+      - name: Get Git Version
+        id: version
+        run: echo "VERSION=$(git describe --tags --always --dirty)" >> $GITHUB_ENV
 
-    - name: Build the Docker image
-      run: |
-        docker buildx build \
-          --file Dockerfile \
-          --tag ${{ IMAGE_NAME }}:${{ env.VERSION }}
-        .
-    - name: Log in to registry
-      run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
+      - name: Build the Docker image
+        run: |
+          docker buildx build \
+            --file Dockerfile \
+            --tag ${{ env.IMAGE_NAME }}:${{ env.VERSION }}
+          .
+      - name: Log in to registry
+        run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
 
-    - name: Push image
-      run: |
-        IMAGE_ID=ghcr.io/${{ github.repository_owner }}/${{ IMAGE_NAME }}
-        docker tag ${{ IMAGE_NAME }}:${{ env.VERSION }} ${{ IMAGE_ID }}:${{ env.VERSION }}
-        docker push ${{ IMAGE_ID }}:${{ env.VERSION }}
+      - name: Push image
+        run: |
+          IMAGE_ID=ghcr.io/${{ github.repository_owner }}/${{ env.IMAGE_NAME }}
+          docker tag ${{ env.IMAGE_NAME }}:${{ env.VERSION }} $IMAGE_ID:${{ env.VERSION }}
+          docker push $IMAGE_ID:${{ env.VERSION }}
