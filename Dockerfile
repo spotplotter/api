@@ -8,12 +8,18 @@ WORKDIR /app
 RUN apt-get update && apt-get install -y \
   libgl1-mesa-glx \
   libglib2.0-0 \
+  curl \
   && apt-get clean \
   && rm -rf /var/lib/apt/lists/*
 
-COPY requirements.txt /app/
+RUN curl -sSL https://install.python-poetry.org | python3 -
 
-RUN pip install --no-cache-dir -r requirements.txt
+ENV PATH="/root/.local/bin:$PATH"
+
+COPY pyproject.toml poetry.lock /app/
+
+RUN poetry config virtualenvs.create false \
+  && poetry install --no-root --no-interaction --no-ansi
 
 COPY . /app/
 
