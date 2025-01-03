@@ -24,8 +24,9 @@ jobs:
         run: |
           docker buildx build \
             --file Dockerfile \
-            --tag ${{ env.IMAGE_NAME }}:${{ env.VERSION }}
-          .
+            --tag ${{ env.IMAGE_NAME }}:${{ env.VERSION }} \
+            .
+
       - name: Log in to registry
         run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
 
