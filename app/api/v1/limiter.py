@@ -1,15 +1,27 @@
+from fastapi import Request
 from fastapi.responses import JSONResponse
 from slowapi import Limiter
 from slowapi.util import get_remote_address
+
+
+def xff_key_func(request: Request):
+    xff = request.headers.get("X-Forwarded-For")
+
+    if xff:
+        return xff.split(",")[0].strip()
+
+    return get_remote_address(request)
+
 
 # Create a global Limiter instance
 limiter = Limiter(
     key_func=get_remote_address,
     headers_enabled=True,
-    default_limits=["10/minute"],
+    default_limits=["20/minute"],
     strategy="moving-window",
     # TODO: Redis
     storage_uri="memory://",
+    key_func=xff_key_func,
 )
 
 
