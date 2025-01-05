@@ -12,6 +12,7 @@ class UserResponseSchema(BaseModel):
     id: UUID
     email: EmailStr
     full_name: str
+    is_verified: bool
 
     class Config:
         from_attributes = True

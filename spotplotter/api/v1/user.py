@@ -1,6 +1,6 @@
 from fastapi import APIRouter, HTTPException, Depends
 from spotplotter.models.user import UserRegisterSchema, UserResponseSchema
-from spotplotter.services.user import create_user, get_user_by_email
+from spotplotter.services.user import create_user, get_user_by_email, verify_user_email
 
 router = APIRouter(prefix="/auth", tags=["Auth"])
 
@@ -23,4 +23,18 @@ async def register(user_data: UserRegisterSchema) -> UserResponseSchema:
         id=new_user["id"],
         email=new_user["email"],
         full_name=new_user["full_name"],
+        is_verified=new_user["is_verified"],
     )
+
+
+@router.get("/verify-email")
+async def verify_email(token: str):
+    """API route for email verification."""
+    updated_user, error = await verify_user_email(token)
+
+    if error:
+        raise HTTPException(
+            status_code=400 if "Invalid" in error else 404, detail=error
+        )
+
+    return {"message": "Email successfully verified!"}
