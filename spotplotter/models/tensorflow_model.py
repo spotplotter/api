@@ -1,15 +1,11 @@
 import numpy as np
 
-from app.core.config import settings
+from spotplotter.core.config import settings
 from dataclasses import dataclass
-from tensorflow.keras.models import load_model
-from app.models.cbam_layer import CBAM
-from app.models.focal_loss import focal_loss
+from tensorflow.keras.models import load_model  # type: ignore
 
 
-model = load_model(
-    settings.model_path, custom_objects={"CBAM": CBAM, "focal_loss_fixed": focal_loss}
-)
+model = load_model(settings.model_path)
 
 
 class_labels = {

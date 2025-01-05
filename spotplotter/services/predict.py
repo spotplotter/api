@@ -1,8 +1,8 @@
 import numpy as np
 from PIL import Image
 from typing import BinaryIO
-from app.models.tensorflow_model import predict_model, Prediction
-from app.models.schemas import PredictionDetails, PredictionResponse
+from spotplotter.models.tensorflow_model import predict_model, Prediction
+from spotplotter.models.predict import PredictionDetails, PredictionResponse
 
 
 def predict(image_stream: BinaryIO):

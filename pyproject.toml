@@ -4,7 +4,7 @@ version = "0.1.0"
 description = "Skin lesion inference API"
 authors = ["Rob Pickerill <rob@spotplotter.com>"]
 homepage = "https://spotplotter.com"
-repository = "https://github.com/spot-plot/inference-api"
+repository = "https://github.com/spotplotter/inference-api"
 package-mode = false
 
 [tool.poetry.dependencies]
@@ -12,12 +12,15 @@ python = "^3.11"
 fastapi = "^0.115.6"
 tensorflow = "^2.18.0"
 numpy = "^2.0.0"
-pydantic = "^2.10.4"
+pydantic = {extras = ["email"], version = "^2.10.4"}
 pydantic-settings = "^2.7.0"
 pillow = "^11.0.0"
 python-multipart = "^0.0.20"
 uvicorn = "^0.34.0"
 slowapi = "^0.1.9"
+asyncpg = "^0.30.0"
+psycopg2-binary = "^2.9.10"
+sqlalchemy = "^2.0.36"
 
 [tool.poetry.dev-dependencies]
 pytest = "^8.3.4"
@@ -30,3 +33,6 @@ build-backend = "poetry.core.masonry.api"
 
 [tool.poetry.scripts]
 runserver = "uvicorn.main:app --host 127.0.0.1 --port 8000 --reload"
+start-db = "bash -c 'docker-compose up --build -d'"
+stop-db = "bash -c 'docker-compose down'"
+connect-db = "bash -c 'docker exec -it spotplotter_postgres psql -U spotplotter -d spotplotter_db'"

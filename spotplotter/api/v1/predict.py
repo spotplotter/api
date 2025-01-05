@@ -1,8 +1,8 @@
 from fastapi import APIRouter, File, UploadFile, HTTPException, Request
 from fastapi.responses import JSONResponse
-from app.models.schemas import PredictionResponse
-from app.services.predictions import predict
-from app.api.v1.limiter import limiter
+from spotplotter.models.predict import PredictionResponse
+from spotplotter.services.predict import predict
+from spotplotter.api.v1.limiter import limiter
 
 router = APIRouter()
 

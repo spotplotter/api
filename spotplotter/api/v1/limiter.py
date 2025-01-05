@@ -15,13 +15,12 @@ def xff_key_func(request: Request):
 
 # Create a global Limiter instance
 limiter = Limiter(
-    key_func=get_remote_address,
+    key_func=xff_key_func,
     headers_enabled=True,
     default_limits=["20/minute"],
     strategy="moving-window",
     # TODO: Redis
     storage_uri="memory://",
-    key_func=xff_key_func,
 )
 
 

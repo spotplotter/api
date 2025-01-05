@@ -1,0 +1,17 @@
+services:
+  postgres:
+    build: .
+    container_name: spotplotter_postgres
+    restart: always
+    environment:
+      POSTGRES_USER: spotplotter
+      POSTGRES_PASSWORD: spotplotterpassword
+      POSTGRES_DB: spotplotter_db
+    ports:
+      - 5432:5432
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+
+volumes:
+  postgres_data:
