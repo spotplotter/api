@@ -1,31 +1,31 @@
-from spotplotter.core.config import settings
-from fastapi_mail import FastMail, MessageSchema, ConnectionConfig, MessageType
-from pydantic import EmailStr, SecretStr
 import os
+import sendgrid
+from sendgrid.helpers.mail import Mail
+from spotplotter.core.config import settings
+from pydantic import EmailStr
 
 
-conf = ConnectionConfig(
-    MAIL_USERNAME=settings.email_settings.username,
-    MAIL_PASSWORD=settings.email_settings.password,
-    MAIL_FROM=settings.email_settings.from_address,
-    MAIL_PORT=settings.email_settings.port,
-    MAIL_SERVER=settings.email_settings.server,
-    MAIL_STARTTLS=settings.email_settings.start_tls,
-    MAIL_SSL_TLS=settings.email_settings.ssl_tls,
-    USE_CREDENTIALS=settings.email_settings.use_credentials,
+sg = sendgrid.SendGridAPIClient(
+    api_key=settings.email_settings.sendgrid_api_key.get_secret_value()
 )
 
 
 async def send_verification_email(email: EmailStr, token: str):
-    """Send verification email with JWT token link."""
-    verify_url = f"{settings.base_url}/api/v1/verify-email?token={token}"
+    """Send verification email using SendGrid API."""
+    verify_url = f"{settings.base_url}/verify-email?token={token}"
 
-    message = MessageSchema(
-        subject="Verify Your Email",
-        recipients=[email],
-        body=f"Click the link to verify your email: {verify_url}",
-        subtype=MessageType.html,
+    message = Mail(
+        from_email=settings.email_settings.from_address,
+        to_emails=email,
+        subject="PlotSpotter: Verify Your Email",
+        html_content=f"""
+            <p>Click the link below to verify your email:</p>
+            <p><a href="{verify_url}">{verify_url}</a></p>
+            <p>If you didn't request this, please ignore this email.</p>
+        """,
     )
 
-    fm = FastMail(conf)
-    await fm.send_message(message)
+    try:
+        response = sg.send(message)
+    except Exception as e:
+        print(f"Failed to send email: {e}")

@@ -8,14 +8,8 @@ class DatabaseSettings(BaseSettings):
 
 
 class EmailSettings(BaseSettings):
-    username: str = os.environ["EMAIL_USERNAME"]
-    password: SecretStr = SecretStr(os.environ["EMAIL_PASSWORD"])
-    server: str = os.environ["EMAIL_SERVER"]
-    port: int = int(os.environ["EMAIL_PORT"])
-    from_address: str = os.environ["EMAIL_FROM"]
-    start_tls: bool = True
-    ssl_tls: bool = False
-    use_credentials: bool = True
+    sendgrid_api_key: SecretStr = SecretStr(os.environ["SENDGRID_API_KEY"])
+    from_address: str = os.environ["EMAIL_FROM_ADDRESS"]
 
 
 class Settings(BaseSettings):

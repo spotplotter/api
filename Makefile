@@ -25,12 +25,9 @@ test:
 	$(POETRY_RUN) pytest
 
 run:
-	EMAIL_USERNAME="apikey" \
-	EMAIL_PASSWORD="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" \
-	EMAIL_FROM="hello@spotplotter.com" \
-	EMAIL_SERVER="smtp.sendgrid.net" \
-	EMAIL_PORT=587 \
-	BASE_URL="http://127.0.0.1" \
+	SENDGRID_API_KEY="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" \
+	EMAIL_FROM_ADDRESS="hello@spotplotter.com" \
+	BASE_URL="http://127.0.0.1:3000" \
 	DATABASE_URL="postgresql://spotplotter:spotplotterpassword@localhost/spotplotter_db" \
 	JWT_SECRET="supersecretkey" \
 	$(POETRY_RUN) uvicorn spotplotter.main:app --host 127.0.0.1 --port 8000 --reload
