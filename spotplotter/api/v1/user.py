@@ -2,7 +2,7 @@ from fastapi import APIRouter, HTTPException, Depends
 from spotplotter.models.user import UserRegisterSchema, UserResponseSchema
 from spotplotter.services.user import create_user, get_user_by_email, verify_user_email
 
-router = APIRouter(prefix="/auth", tags=["Auth"])
+router = APIRouter(prefix="/user", tags=["User"])
 
 
 @router.post("/register", response_model=UserResponseSchema)

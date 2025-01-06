@@ -27,11 +27,12 @@ app.add_middleware(
     CORSMiddleware,
     allow_origins=[
         "http://localhost:3000",
+        "http://127.0.0.1:3000",
         "https://spotplotter.com",
     ],
     allow_credentials=True,
-    allow_methods=["POST"],
-    allow_headers=["*"],
+    allow_methods=["POST", "GET", "PATCH", "OPTIONS"],
+    allow_headers=["Authorization", "Content-Type"],
 )
 
 # Include API routes

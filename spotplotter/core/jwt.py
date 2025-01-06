@@ -12,6 +12,7 @@ def create_verification_token(email: str) -> str:
         "sub": email,
         "exp": datetime.now(timezone.utc) + timedelta(hours=24),  # Token valid for 24h
     }
+
     return jwt.encode(payload, JWT_SECRET, algorithm=JWT_ALGORITHM)
 
 
